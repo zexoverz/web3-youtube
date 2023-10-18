@@ -3,6 +3,8 @@ import React, { useState } from "react";
 function Landing() {
   // Creating a function to connect user's wallet
   const connectWallet = async () => {
+    console.log("TRIGGER CONNECT")
+
     try {
       const { ethereum } = window;
 
@@ -13,10 +15,14 @@ function Landing() {
         return;
       }
 
+      console.log(ethereum, "ETH")
+
       // If user has Metamask installed, connect to the user's wallet
       const accounts = await ethereum.request({
         method: "eth_requestAccounts",
       });
+
+      console.log(accounts, "ACC")
 
       // At last save the user's wallet address in browser's local storage
       localStorage.setItem("walletAddress", accounts[0]);
