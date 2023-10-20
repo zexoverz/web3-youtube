@@ -1,8 +1,12 @@
 'use client'
 
-import React, { useState, useRef } from "react";
-import { BiCloud, BiMusic, BiPlus } from "react-icons/bi";
+import React, { useState, useRef, useMemo } from "react";
+import { BiCloud, BiMusic, BiPlus, BiCodeBlock,  } from "react-icons/bi";
 import { create } from "ipfs-http-client";
+import saveToIPFS from "../utils/saveToIPFS";
+import { useCreateAsset } from "@livepeer/react";
+import getContract from "../utils/getContract";
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function Upload() {
   // Creating state for the input field
@@ -13,27 +17,169 @@ export default function Upload() {
   const [thumbnail, setThumbnail] = useState("");
   const [video, setVideo] = useState("");
 
+  const {
+    mutate: createAsset,
+    data: assets,
+    progress: progress,
+    isLoading,
+    status,
+    error,
+  } = useCreateAsset({
+    sources: [{ name: title, file: video }],
+    noWait: true
+  });
+
+  console.log(progress, "PROGRESSS")
+  // console.log(status, "STATUS")
+  
+
   //  Creating a ref for thumbnail and video
   const thumbnailRef = useRef();
   const videoRef = useRef();
 
+  const delay = ms => new Promise(res => setTimeout(res, ms));
+
+  // When a user clicks on the upload button
+  const handleSubmit = async () => {
+    try{
+      toast.loading("uploading asset..")
+      // Calling the upload video function
+      await uploadVideo();
+      
+     
+    }catch(err){
+      toast.dismiss()
+      toast.error("Error Uploading Video Asset!")
+      console.log(err)
+    }
+    
+  }
+
+  // Function to upload the video to IPFS
+  const uploadThumbnail = async () => {
+    // Passing the file to the saveToIPFS function and getting the CID
+    const cid = await saveToIPFS(thumbnail);
+    // Returning the CID
+    return cid;
+  };
+
+  // Function to upload the video to Livepeer
+  const uploadVideo = async () => {
+    // Calling the createAsset function from the useCreateAsset hook to upload the video
+    createAsset({
+      name: title,
+      file: video,
+    });
+  };
+
+  // Function to save the video to the Contract
+  const saveVideo = async () => {
+    toast.dismiss();
+    toast.loading("creating blockchain transactions..")
+    // Calling the upload thumbnail function and getting the CID
+    const thumbnailCID = await uploadThumbnail();
+
+    // Creating a object to store the metadata
+    let data = {
+      video: assets ? assets[0].id : null,
+      title,
+      description,
+      location, 
+      category,
+      thumbnail: thumbnailCID,
+      UploadedDate: Date.now(),
+    };
+
+    console.log(data, "REQUEST BODY")
+
+    try{
+      // Get the contract from the getContract function
+      let contract = await getContract()
+
+      // Upload the video to the contract
+      let response = await contract.uploadVideo(
+        data.video,
+        data.title,
+        data.description,
+        data.location,
+        data.category,
+        data.thumbnail,
+        data.UploadedDate
+      );
+
+      console.log(response, "BLOCKCCHAIN RESPONSE")
+
+      toast.dismiss()
+      toast.success("Save Video Success!")
+      toast.success(`txHash: ${response.hash}`)
+    }catch(err){
+      toast.dismiss()
+      toast.error("Error Save Video To Smart Contract!")
+      console.log(err)
+    }
+  };
+
+  const progressFormatted = useMemo(
+    () =>
+      progress?.[0].phase === 'failed'
+        ? 'Failed to process video.'
+        : progress?.[0].phase === 'waiting'
+        ? 'Waiting'
+        : progress?.[0].phase === 'uploading'
+        ? `Uploading: ${Math.round(progress?.[0]?.progress * 100)}%`
+        : progress?.[0].phase === 'processing'
+        ? `Processing: ${Math.round(progress?.[0].progress * 100)}%`
+        : null,
+    [progress],
+  );
+
+
   return (
     <div className="w-full h-screen bg-[#1a1c1f] flex flex-row">
+      <Toaster></Toaster>
       <div className="flex-1 flex flex-col">
         <div className="mt-5 mr-10 flex  justify-end">
           <div className="flex items-center">
             <button className="bg-transparent  text-[#9CA3AF] py-2 px-6 border rounded-lg  border-gray-600  mr-6">
               Discard
             </button>
-            <button
+            {
+              assets && <button
+              disabled={isLoading}
+              onClick={() => {
+                saveVideo();
+              }}
+              className="bg-green-500 hover:bg-green-700 text-white  py-2  rounded-lg flex px-4 justify-between flex-row items-center"
+            >
+              <BiCodeBlock />
+              <p className="ml-2">Create Video Transaction</p>
+            </button> 
+            }
+            {
+              (!assets && isLoading) && <button
+              disabled={true}
               onClick={() => {
                 handleSubmit();
               }}
               className="bg-blue-500 hover:bg-blue-700 text-white  py-2  rounded-lg flex px-4 justify-between flex-row items-center"
-            >
-              <BiCloud />
-              <p className="ml-2">Upload</p>
-            </button>
+              >
+                <BiCloud />
+                <p className="ml-2">{progressFormatted ? progressFormatted : "Preparing.."}</p>
+              </button>
+            }
+
+            {
+              (!assets && !isLoading) && <button
+              // disabled={isLoading}
+              onClick={() => {
+                handleSubmit();
+              }}
+              className="bg-blue-500 hover:bg-blue-700 text-white  py-2  rounded-lg flex px-4 justify-between flex-row items-center"
+              >
+                <BiCloud />
+                <p className="ml-2">Upload</p>
+              </button>
+            }
           </div>
         </div>
         <div className="flex flex-col m-10     mt-5  lg:flex-row">

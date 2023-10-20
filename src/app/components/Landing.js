@@ -15,8 +15,6 @@ function Landing() {
         return;
       }
 
-      console.log(ethereum, "ETH")
-
       // If user has Metamask installed, connect to the user's wallet
       const accounts = await ethereum.request({
         method: "eth_requestAccounts",
@@ -57,7 +55,32 @@ function Landing() {
                   to create, share and watch videos, without worrying about
                   their privacy.
                 </p>
-                <button
+                {
+                  localStorage.getItem("walletAddress") ? 
+                  <div>
+                    <h6
+                    className="text text-white md:text-6 font-extrabold leading-tighter tracking-tighter mb-4"
+                    data-aos="zoom-y-out"
+                    >
+                      <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-teal-400">
+                        {localStorage.getItem("walletAddress")}
+                      </span>
+                      <br></br>Wallet Address Connected
+                    </h6> 
+
+                    {/* <button
+                    className="items-center  bg-white rounded-full font-medium  p-4 shadow-lg w-52  "
+                    onClick={() => {
+                      // Calling the connectWallet function when user clicks on the button
+                      connectWallet();
+                    }}
+                    >
+                      <span>Upload Video</span>
+                    </button> */}
+                  </div>
+                  
+                  
+                  : <button
                   className="items-center  bg-white rounded-full font-medium  p-4 shadow-lg"
                   onClick={() => {
                     // Calling the connectWallet function when user clicks on the button
@@ -66,6 +89,9 @@ function Landing() {
                 >
                   <span>Connect wallet</span>
                 </button>
+                }
+
+                
               </div>
             </div>
           </div>

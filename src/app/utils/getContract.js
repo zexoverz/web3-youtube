@@ -1,7 +1,8 @@
-import ContractAbi from "../artifacts/contracts/YouTube.sol/YouTube.json";
+import ContractAbi from "../../../artifacts/contracts/YouTube.sol/YouTube.json";
 import { ethers } from "ethers";
 
 export default function getContract() {
+  console.log("CREATE PROVIDER")
   // Creating a new provider
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   // Getting the signer
@@ -12,6 +13,8 @@ export default function getContract() {
     ContractAbi.abi,
     signer
   );
+
+  console.log(contract, "THIS IS CONTRACT ")
   // Returning the contract
   return contract;
 }
