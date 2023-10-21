@@ -71,7 +71,7 @@ export default function Home() {
   return (
     <div className="w-full bg-[#1a1c1f] flex flex-row">
       <div className="flex-1 laptop:h-screen flex flex-col">
-        <div className="flex flex-row flex-wrap">
+        <div className="flex flex-row flex-wrap m-5 ">
           {videos.map((video) => (
             <div
             className="w-80"

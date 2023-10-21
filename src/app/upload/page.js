@@ -190,21 +190,21 @@ export default function Upload() {
             }
           </div>
         </div>
-        <div className="flex flex-col m-10     mt-5  lg:flex-row">
+        <div className="flex flex-col w-[80%] m-auto  mt-5  lg:flex-row">
           <div className="flex lg:w-3/4 flex-col ">
             <label className="text-[#9CA3AF]  text-sm">Title</label>
             <input
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Rick Astley - Never Gonna Give You Up (Official Music Video)"
-              className="w-[90%] text-white placeholder:text-gray-600  rounded-md mt-2 h-12 p-2 border  bg-[#1a1c1f] border-[#444752] focus:outline-none"
+              className=" text-white placeholder:text-gray-600  rounded-md mt-2 h-12 p-2 border  bg-[#1a1c1f] border-[#444752] focus:outline-none"
             />
             <label className="text-[#9CA3AF] mt-10">Description</label>
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Never Gonna Give You Up was a global smash on its release in July 1987, topping the charts in 25 countries including Rick’s native UK and the US Billboard Hot 100.  It also won the Brit Award for Best single in 1988. Stock Aitken and Waterman wrote and produced the track which was the lead-off single and lead track from Rick’s debut LP “Whenever You Need Somebody."
-              className="w-[90%] text-white h-32 placeholder:text-gray-600  rounded-md mt-2 p-2 border  bg-[#1a1c1f] border-[#444752] focus:outline-none"
+              className=" text-white h-32 placeholder:text-gray-600  rounded-md mt-2 p-2 border  bg-[#1a1c1f] border-[#444752] focus:outline-none"
             />
 
             <div className="flex flex-row mt-10 w-[90%]  justify-between">
@@ -215,7 +215,7 @@ export default function Upload() {
                   onChange={(e) => setLocation(e.target.value)}
                   type="text"
                   placeholder="Bali - Indonesia"
-                  className="w-[90%] text-white placeholder:text-gray-600  rounded-md mt-2 h-12 p-2 border  bg-[#1a1c1f] border-[#444752] focus:outline-none"
+                  className=" text-white placeholder:text-gray-600  rounded-md mt-2 h-12 p-2 border  bg-[#1a1c1f] border-[#444752] focus:outline-none"
                 />
               </div>
               <div className="flex flex-col w-2/5    ">
@@ -223,7 +223,7 @@ export default function Upload() {
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
-                  className="w-[90%] text-white placeholder:text-gray-600  rounded-md mt-2 h-12 p-2 border  bg-[#1a1c1f] border-[#444752] focus:outline-none"
+                  className=" text-white placeholder:text-gray-600  rounded-md mt-2 h-12 p-2 border  bg-[#1a1c1f] border-[#444752] focus:outline-none"
                 >
                   <option>Music</option>
                   <option>Sports</option>
@@ -237,69 +237,81 @@ export default function Upload() {
                 </select>
               </div>
             </div>
-            <label className="text-[#9CA3AF]  mt-10 text-sm">Thumbnail</label>
 
-            <div
-              onClick={() => {
-                thumbnailRef.current.click();
-              }}
-              className="border-2 w-64 border-gray-600  border-dashed rounded-md mt-2 p-2  h-36 items-center justify-center flex"
-            >
-              {thumbnail ? (
-                <img
+            <div className="flex flex-row w-[90%]  justify-between">
+              <div className="flex flex-col w-2/5"> 
+                    <label className="text-[#9CA3AF]  mt-10 text-sm">Thumbnail</label>
+
+                    <div
+                      onClick={() => {
+                        thumbnailRef.current.click();
+                      }}
+                      className="border-2 w-64 border-gray-600  border-dashed rounded-md mt-2 p-2  h-36 items-center justify-center flex"
+                    >
+                      {thumbnail ? (
+                        <img
+                          onClick={() => {
+                            thumbnailRef.current.click();
+                          }}
+                          src={URL.createObjectURL(thumbnail)}
+                          alt="thumbnail"
+                          className="h-full rounded-md"
+                        />
+                      ) : (
+                        <BiPlus size={40} color="gray" />
+                      )}
+                    </div>
+
+                    <input
+                      type="file"
+                      className="hidden"
+                      ref={thumbnailRef}
+                      onChange={(e) => {
+                        setThumbnail(e.target.files[0]);
+                      }}
+                    />
+              </div>
+
+              <div className="flex flex-col w-2/5"> 
+                <div
                   onClick={() => {
-                    thumbnailRef.current.click();
+                    videoRef.current.click();
                   }}
-                  src={URL.createObjectURL(thumbnail)}
-                  alt="thumbnail"
-                  className="h-full rounded-md"
+                  className={
+                    video
+                      ? " w-96   rounded-md  h-64 items-center justify-center flex"
+                      : "border-2 border-gray-600  w-96 border-dashed rounded-md mt-8   h-64 items-center justify-center flex"
+                  }
+                >
+                  {video ? (
+                    <video
+                      controls
+                      src={URL.createObjectURL(video)}
+                      className="h-full rounded-md"
+                    />
+                  ) : (
+                    <p className="text-[#9CA3AF]">Upload Video</p>
+                  )}
+
+                  <input
+                    type="file"
+                    className="hidden"
+                    ref={videoRef}
+                    accept={"video/*"}
+                    onChange={(e) => {
+                      setVideo(e.target.files[0]);
+                      console.log(e.target.files[0]);
+                    }}
                 />
-              ) : (
-                <BiPlus size={40} color="gray" />
-              )}
+                </div>
+              </div>
             </div>
-
-            <input
-              type="file"
-              className="hidden"
-              ref={thumbnailRef}
-              onChange={(e) => {
-                setThumbnail(e.target.files[0]);
-              }}
-            />
+            
           </div>
 
-          <div
-            onClick={() => {
-              videoRef.current.click();
-            }}
-            className={
-              video
-                ? " w-96   rounded-md  h-64 items-center justify-center flex"
-                : "border-2 border-gray-600  w-96 border-dashed rounded-md mt-8   h-64 items-center justify-center flex"
-            }
-          >
-            {video ? (
-              <video
-                controls
-                src={URL.createObjectURL(video)}
-                className="h-full rounded-md"
-              />
-            ) : (
-              <p className="text-[#9CA3AF]">Upload Video</p>
-            )}
-          </div>
+          
         </div>
-        <input
-          type="file"
-          className="hidden"
-          ref={videoRef}
-          accept={"video/*"}
-          onChange={(e) => {
-            setVideo(e.target.files[0]);
-            console.log(e.target.files[0]);
-          }}
-        />
+        
       </div>
     </div>
   );

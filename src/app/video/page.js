@@ -80,7 +80,7 @@ export default function VideoPage() {
   }, []);
 
   return (
-    <div className="w-full  bg-[#1a1c1f]  flex flex-row">
+    <div className="w-full  bg-[#1a1c1f] flex flex-row">
       <div className="flex-1 flex ">
         {video && (
           <div className="flex m-10 justify-between laptop:flex-row tablet:flex-col">

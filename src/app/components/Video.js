@@ -21,7 +21,7 @@ export default function Video({ horizontal, video }) {
         alt=""
       />
       <div className={horizontal && "ml-3  w-80"}>
-        <h4 className="text-md font-bold dark:text-white mt-3">
+        <h4 className="text-md font-bold text-white mt-3">
           {video.title}
         </h4>
         <p className="text-sm flex items-center text-[#878787] mt-1">
