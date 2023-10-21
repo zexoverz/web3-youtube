@@ -78,8 +78,8 @@ export default function Home() {
     getVideos();
   }, [search]);
   return (
-    <div className="w-full bg-[#1a1c1f] flex flex-row">
-      <div className="flex-1 laptop:h-screen flex flex-col">
+    <div className="w-full max-h-full bg-[#1a1c1f] flex flex-row">
+      <div className="flex-1 h-screen flex flex-col">
         <Header
         search={(e) => {
             setSearch(e);
