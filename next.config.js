@@ -14,10 +14,14 @@ const nextConfig = {
             }
         ]
     },
-    // env: {
-    //     WEB3_STORAGE_TOKEN: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDg2MjU4NjM1M0FjYTQxMjYzMDIwYmU5NzEwNDczYUYxQzU5NThkOTgiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2OTc4MDMyNjk2MjUsIm5hbWUiOiJvbmJvYXJkIn0.BvV-sSOF8s507ieqkTrXdqYD682z3piqXqW1e60Qbkk",
-    //     LIVE_PEER_TOKEN: "7402068f-5ff4-4e20-97f9-dab6ac8ff158"
-    // }
+    webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
+        config.externals.push({
+          'utf-8-validate': 'commonjs utf-8-validate',
+          'bufferutil': 'commonjs bufferutil',
+        })
+        return config
+    },
+
 }
 
 module.exports = nextConfig

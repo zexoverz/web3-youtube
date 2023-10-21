@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { ethers } from "ethers";
+const ethers = require("ethers")
 import { Toaster, toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
@@ -23,7 +23,7 @@ function Landing() {
         alert("Please install MetaMask");
         return;
       }
-      let ETHERSJS_PROVIDER = new ethers.providers.Web3Provider(window.ethereum);
+      let ETHERSJS_PROVIDER = new ethers.BrowserProvider(ethereum);
       await ETHERSJS_PROVIDER.send('wallet_switchEthereumChain', [{ chainId: `0x${CHAIN_ID_REQUIRED.toString(16)}` }]);
 
       // If user has Metamask installed, connect to the user's wallet

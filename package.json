@@ -15,7 +15,6 @@
     "@nomicfoundation/hardhat-toolbox": "^3.0.0",
     "autoprefixer": "^10.4.16",
     "dotenv": "^16.3.1",
-    "ethers": "^5.7.2",
     "graphql": "^16.8.1",
     "hardhat": "^2.18.2",
     "ipfs-http-client": "^60.0.1",
