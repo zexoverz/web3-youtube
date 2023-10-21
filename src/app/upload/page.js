@@ -118,7 +118,7 @@ export default function Upload() {
         duration: 5000
       })
 
-      router.push("/upload")
+      router.push("/home")
       
     }catch(err){
       toast.dismiss()

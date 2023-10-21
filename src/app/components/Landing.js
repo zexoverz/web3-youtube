@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { Toaster, toast } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const CHAIN_ID_REQUIRED = 80001; //Mumbai
 
 function Landing() {
   
+  const router = useRouter();
   let [walletAddress, setWalletAddress] = useState(false)
 
   // Creating a function to connect user's wallet
@@ -36,6 +38,7 @@ function Landing() {
       setWalletAddress(accounts)
       toast.dismiss()
       toast.success("Wallet Connected!")
+      router.push("/home")
     } catch (error) {
       console.log(error);
     }

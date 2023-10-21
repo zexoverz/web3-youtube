@@ -3,10 +3,12 @@
 import React, { useEffect, useState } from "react";
 import { useApolloClient, gql } from "@apollo/client";
 import Video from "../components/Video";
+import { Header } from "../components/Header";
 
 export default function Home() {
   // Creating a state to store the uploaded video
   const [videos, setVideos] = useState([]);
+  const [search, setSearch] = useState("");
 
   // Get the client from the useApolloClient hook
   const client = useApolloClient();
@@ -52,6 +54,12 @@ export default function Home() {
           skip: 0,
           orderBy: "createdAt",
           orderDirection: "desc",
+                    // NEW: Added where in order to search for videos
+          where: {
+            ...(search && {
+              title_contains_nocase: search,
+            }),
+          },
         },
         fetchPolicy: "network-only",
       })
@@ -64,13 +72,20 @@ export default function Home() {
       });
   };
 
+
   useEffect(() => {
     // Runs the function getVideos when the component is mounted
     getVideos();
-  }, []);
+  }, [search]);
   return (
     <div className="w-full bg-[#1a1c1f] flex flex-row">
       <div className="flex-1 laptop:h-screen flex flex-col">
+        <Header
+        search={(e) => {
+            setSearch(e);
+        }}>
+
+        </Header>
         <div className="flex flex-row flex-wrap m-5 ">
           {videos.map((video) => (
             <div
