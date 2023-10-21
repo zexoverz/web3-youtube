@@ -1,5 +1,5 @@
 import ContractAbi from "../../../artifacts/contracts/YouTube.sol/YouTube.json";
-import { ethers } from "ethers";
+const ethers = require("ethers")
 
 export default function getContract() {
   console.log("CREATE PROVIDER")
