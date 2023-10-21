@@ -2,7 +2,6 @@
 
 import React, { useState, useRef, useMemo } from "react";
 import { BiCloud, BiMusic, BiPlus, BiCodeBlock,  } from "react-icons/bi";
-import { create } from "ipfs-http-client";
 import saveToIPFS from "../utils/saveToIPFS";
 import { useCreateAsset } from "@livepeer/react";
 import getContract from "../utils/getContract";
