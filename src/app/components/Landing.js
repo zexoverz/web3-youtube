@@ -1,10 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { ethers } from "ethers";
+import { Toaster, toast } from "react-hot-toast";
+
+const CHAIN_ID_REQUIRED = 80001; //Mumbai
 
 function Landing() {
+  
+  let [walletAddress, setWalletAddress] = useState(false)
+
   // Creating a function to connect user's wallet
   const connectWallet = async () => {
     console.log("TRIGGER CONNECT")
-
+    toast.loading("loading..")
     try {
       const { ethereum } = window;
 
@@ -14,6 +21,8 @@ function Landing() {
         alert("Please install MetaMask");
         return;
       }
+      let ETHERSJS_PROVIDER = new ethers.providers.Web3Provider(window.ethereum);
+      await ETHERSJS_PROVIDER.send('wallet_switchEthereumChain', [{ chainId: `0x${CHAIN_ID_REQUIRED.toString(16)}` }]);
 
       // If user has Metamask installed, connect to the user's wallet
       const accounts = await ethereum.request({
@@ -24,14 +33,23 @@ function Landing() {
 
       // At last save the user's wallet address in browser's local storage
       localStorage.setItem("walletAddress", accounts[0]);
+      setWalletAddress(accounts)
+      toast.dismiss()
+      toast.success("Wallet Connected!")
     } catch (error) {
       console.log(error);
     }
   };
 
+  useEffect(() => {
+    localStorage.removeItem("walletAddress")
+  }, [])
+  
+
   return (
     <>
       {/* Creating a hero component with black background and centering everything in the screen */}
+      <Toaster />
       <section className="relative bg-black flex flex-col h-screen justify-center items-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="pt-32 pb-12 md:pt-40 md:pb-20">
@@ -56,7 +74,7 @@ function Landing() {
                   their privacy.
                 </p>
                 {
-                  localStorage.getItem("walletAddress") ? 
+                  walletAddress ? 
                   <div>
                     <h6
                     className="text text-white md:text-6 font-extrabold leading-tighter tracking-tighter mb-4"

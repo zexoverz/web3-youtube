@@ -1,6 +1,8 @@
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { LivePeerProvider } from './livepeer'
+import { LivePeerProvider } from './lib/livepeer'
+import client from "./lib/client";
+import { ApolloWrapper } from './lib/apollo-wrapper';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -13,7 +15,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <LivePeerProvider>{children}</LivePeerProvider>
+        <ApolloWrapper>
+          <LivePeerProvider>{children}</LivePeerProvider>
+        </ApolloWrapper>
       </body>
     </html>
     

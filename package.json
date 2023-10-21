@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.8.6",
+    "@apollo/experimental-nextjs-app-support": "^0.4.3",
     "@livepeer/react": "^3.0.1",
     "@nomicfoundation/hardhat-toolbox": "^3.0.0",
     "autoprefixer": "^10.4.16",
