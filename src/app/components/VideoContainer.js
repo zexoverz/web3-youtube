@@ -13,6 +13,11 @@ export default function VideoComponent({ video }) {
           <p className="text-gray-500 mt-1">
             {video.category} •{" "}
             {new Date(video.createdAt * 1000).toLocaleString("en-IN")}
+            <br></br>
+          </p>
+
+          <p className="dark:text-white mt-5">
+          {video.description}
           </p>
         </div>
       </div>

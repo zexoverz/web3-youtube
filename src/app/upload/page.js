@@ -7,6 +7,7 @@ import saveToIPFS from "../utils/saveToIPFS";
 import { useCreateAsset } from "@livepeer/react";
 import getContract from "../utils/getContract";
 import toast, { Toaster } from 'react-hot-toast';
+import { useRouter } from 'next/navigation'
 
 export default function Upload() {
   // Creating state for the input field
@@ -17,6 +18,8 @@ export default function Upload() {
   const [thumbnail, setThumbnail] = useState("");
   const [video, setVideo] = useState("");
 
+  const router = useRouter()
+ 
   const {
     mutate: createAsset,
     data: assets,
@@ -26,7 +29,7 @@ export default function Upload() {
     error,
   } = useCreateAsset({
     sources: [{ name: title, file: video }],
-    noWait: true
+    noWait: true,
   });
 
   console.log(progress, "PROGRESSS")
@@ -46,7 +49,8 @@ export default function Upload() {
       // Calling the upload video function
       await uploadVideo();
       
-     
+      delay(5000)
+      toast.dismiss();
     }catch(err){
       toast.dismiss()
       toast.error("Error Uploading Video Asset!")
@@ -110,8 +114,12 @@ export default function Upload() {
       console.log(response, "BLOCKCCHAIN RESPONSE")
 
       toast.dismiss()
-      toast.success("Save Video Success!")
-      toast.success(`txHash: ${response.hash}`)
+      toast.success("Save Video Success!", {
+        duration: 5000
+      })
+
+      router.push("/upload")
+      
     }catch(err){
       toast.dismiss()
       toast.error("Error Save Video To Smart Contract!")

@@ -80,14 +80,14 @@ export default function VideoPage() {
   }, []);
 
   return (
-    <div className="w-full bg-[#1a1c1f]  flex flex-row">
-      <div className="flex-1 flex flex-col h-screen">
+    <div className="w-full  bg-[#1a1c1f]  flex flex-row">
+      <div className="flex-1 flex ">
         {video && (
-          <div className="flex flex-col m-10 justify-between lg:flex-row">
-            <div className="lg:w-4/6 w-6/6">
+          <div className="flex m-10 justify-between laptop:flex-row tablet:flex-col">
+            <div className="tablet:w-full w-4/6">
               <VideoComponent video={video} />
             </div>
-            <div className="w-2/6 ml-5">
+            <div className="laptop:w-3/6 laptop:ml-5 tablet:w-full ">
               <h4 className="text-md font-bold text-white ml-5 mb-3">
                 Related Videos
               </h4>
