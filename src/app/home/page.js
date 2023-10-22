@@ -79,7 +79,7 @@ export default function Home() {
   }, [search]);
   return (
     <div className="w-full max-h-full bg-[#1a1c1f] flex flex-row">
-      <div className="flex-1 h-screen flex flex-col">
+      <div className="flex-1 laptop:h-screen tablet:h-full bg-[#1a1c1f] flex flex-col">
         <Header
         search={(e) => {
             setSearch(e);
